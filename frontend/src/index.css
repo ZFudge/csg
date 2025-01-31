@@ -1,0 +1,239 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  padding: 0.5em;
+  color: black;
+  background-color: white;
+  transition-duration: 1s;
+  user-select: none;
+}
+
+nav {
+  min-height: 2em;
+}
+
+h1 {
+  text-align: center;
+}
+
+button {
+  padding: 0.5em 0.7em;
+  border-radius: 0.25em;
+  border: none;
+  font-size: 1rem;
+  font-weight: 800;
+  transition-duration: 0.5s;
+  color: black;
+  background-color: #ddd;
+}
+
+.pointer, button:not(.disabled):hover {
+  cursor: pointer;
+}
+
+button.disabled {
+  background-color: #999;
+  color: black;
+}
+
+button.enabled {
+  background-color: #6f95ff;
+}
+
+button.enabled:hover {
+  background-color: #356aff;
+}
+
+#svg-cookie {
+  height: 12em;
+  margin: auto;
+  display: block;
+}
+
+#link-options {
+  padding: 1em;
+  margin: 1em;
+  border: 0.5em solid white;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+#link-options div {
+  margin: 1em;
+}
+
+.link {
+  text-decoration: none;
+  color: black;
+  transition-duration: 0.5s;
+  padding: 0.5em 1em;
+}
+
+.link:hover, button:not(.disabled,.color-choice):hover {
+  background-color: black;
+  color: white;
+}
+
+.align-text-center {
+  text-align: center;
+}
+
+.align-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.left-aligned {
+  display: contents;
+  min-width: 40%;
+}
+
+.left-aligned button {
+  margin: 2em 0;
+}
+
+.player-list {
+  text-decoration: underline;
+}
+
+#player-display {
+  width: fit-content;
+  position: absolute;
+  right: 1em;
+  padding: 0.1rem;
+  border: 0.125em solid #eee;
+  font-size: 2em;
+}
+
+.rounded-border {
+  border-radius: 0.25em;
+}
+
+@keyframes my-turn-display {
+  0%   { border-color: #bbb; }
+  60%  { border-color: #fff; }
+  100% { border-color: #bbb; }
+}
+
+#name-display {
+  display: flex;
+  justify-content: center;
+  border: 0.125em solid white;
+  margin: 0.1em 0.2em;
+}
+
+#name-display.my-turn {
+  animation: my-turn-display 3s infinite;
+}
+
+#player-name {
+  display: flex;
+  padding: 0.25em;
+  transition-duration: 1s;
+  border: 0.125em solid transparent;
+}
+
+@keyframes my-turn-name {
+  0%   { border-color: #fff; }
+  50%  { border-color: #bbb; }
+  100% { border-color: #fff; }
+}
+
+.player-focus {
+  border: 0.125em solid #8df89a;
+  animation: my-turn-name 3s infinite;
+}
+
+.hidden {
+  opacity: 0;
+  cursor: default;
+}
+
+#error {
+  pointer-events: none;
+  position: fixed;
+  padding: 1em 0;
+  font-size: 1.25em;
+  color: red;
+  width: 100%;
+  bottom: 0;
+  z-index: 9999;
+}
+
+#error span {
+  padding: 0.5em 1em;
+  background-color: white;
+}
+
+.dot {
+  margin: 0.15em;
+  display: inline-block;
+  background-color: gray;
+  border-radius: 50%;
+  height: 0.5em;
+  width: 0.5em;
+  transition-duration: 0.5s;
+}
+
+.dot.focus {
+  height: 0.75em;
+  width: 0.75em;
+}
+
+.dot.me {
+  background-color: #0F4;
+}
+
+#dots-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 1em;
+}
+
+#dots-container:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  border-top: 1px solid black;
+  background: black;
+  width: 100%;
+  transform: translateY(-50%);
+  z-index: -1;
+}
+
+.point {
+  width: 0;
+  height: 0;
+  border-top: 0.5em solid transparent;
+  border-bottom: 0.5em solid transparent;
+  margin-right: 0.125em;
+}
+
+.point.left {
+  border-right: 0.75em solid black;
+}
+
+.point.right {
+  border-left: 0.75em solid black;
+}
+
+@keyframes notification {
+  0%   { background-color: #dddddddd; }
+  50% { background-color: #eeeeeeee; }
+  100% { background-color: #dddddddd; }
+}
+
+.notification {
+  pointer-events: none;
+  position: fixed;
+  text-align: center;
+  background-color: #dddddddd;
+  width: 100%;
+  padding: 1em;
+  transition-duration: 1.5s;
+  animation: notification 1s infinite;
+  z-index: 99;
+}
+

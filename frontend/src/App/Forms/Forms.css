@@ -1,0 +1,112 @@
+
+.input-container {
+    display: flex;
+    justify-content: space-between;
+    line-height: 0;
+    align-items: center
+}
+
+.input-container input {
+    width: 8em;
+    height: 1.5rem;
+    margin: 0.5em 0em;
+}
+
+.input-title {
+    display: inline;
+    margin-right: 1em;
+}
+
+#game-hash-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 20rem;
+}
+
+#game-hash-container div div {
+    position: absolute;
+    margin: auto;
+    text-align: center;
+}
+
+#game-hash, #game-hash-container div div {
+    width: 5em;
+    text-align: center;
+    padding: 0.25em 0.5em;
+}
+
+#game-hash-title {
+    text-decoration: none;
+}
+
+#game-hash {
+    font-size: 1.25rem;
+    height: 1.5rem;
+    resize: none;
+}
+
+textarea {
+    resize: none;
+}
+
+/* New/Rejoin game */
+#recycle-game {
+    background-color: #cccccccc;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    left: 0;
+    top: 0;
+}
+
+#recycle-game .modal {
+    background-color: white;
+    z-index: 999;
+    padding: 2em;
+    margin: auto;
+    text-align: center;
+    user-select: none;
+}
+
+#recycle-game .modal button {
+    margin: 1em;
+}
+
+.rejoined-player-list-container {
+    margin-bottom: 2em;
+}
+
+.rejoining-player-name-container {
+    display: flex;
+    justify-content: flex-start;
+    min-width: 3em;
+    max-width: 60%;
+    margin: auto;
+}
+
+.rejoining-player-name-container .game-creator {
+    text-decoration: underline;
+}
+
+.player-rejoin-status {
+    display: inline-block;
+    height: 1em;
+    width: 1em;
+    margin-right: 1.5em;
+    border-radius: 50%;
+    border: 1px solid black;
+}
+
+.player-rejoin-status.accepted {
+    background-color: #08ff08;
+}
+
+.player-rejoin-status.pending {
+    background-color: #ddd;
+}
+
+.player-rejoin-status.rejected {
+    background-color: red;
+}

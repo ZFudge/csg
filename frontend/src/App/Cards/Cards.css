@@ -1,0 +1,277 @@
+:root {
+  --red: #d93d26;
+  --green: #84c03f;
+  --blue: #3e77b5;
+  --yellow: #f4d438;
+}
+
+.card-container {
+    width: 5em;
+    display: flex;
+    position: relative;
+    flex-wrap: wrap;
+    margin: 1em 0em;
+    width: fit-content;
+    border: 0.5em;
+    padding: 0.1em;
+    z-index: 1;
+}
+
+.card {
+    border-radius: 10%;
+    height: 5em;
+    width: 3em;
+    transition-duration: 0.4s;
+    /* omit opacity transition */
+    transition-property: background-color, left, top, transform;
+    color: white;
+    font-family: 'Rubik', Arial;
+    display: grid;
+    grid-template-columns: 1em 1em 1em;
+    grid-template-rows: 1.5em 2em 1.5em;
+    text-align: center;
+}
+
+.corner {
+    font-size: 0.5em;
+    display: flex;
+}
+
+.up-left {
+    /* rs / cs / re / ce */
+    grid-area: 1 / 1 / 2 / 2;
+}
+
+.dn-right {
+    /* rs / cs / re / ce */
+    grid-area: 3 / 3 / 4 / 4;
+    transform: rotate(-180deg);
+}
+
+.corner span {
+    display: inline-block;
+    margin: auto;
+}
+
+.center {
+    font-size: 1.5em;
+    /* rs / cs / re / ce */
+    grid-area: 2 / 1 / 3 / 4;
+}
+
+.deck {
+    margin-right: 1em;
+}
+
+.players-name-cards {
+    font-size: 1.25em;
+    width: fit-content;
+}
+
+.playable-card:not(.disabled), .deck:not(.disabled) {
+    cursor: pointer;
+}
+
+.playable-card:not(.disabled):hover, .deck:not(.disabled):hover {
+    transform: rotate(5deg) translateY(-0.5em);
+}
+
+.deck, .other-player-card {
+    background: linear-gradient(0.66turn, #e66465, #9198e5);
+}
+
+.other-player-card {
+    position: absolute;
+}
+
+.card-container.not-mine {
+    margin-bottom: 6em;
+}
+
+.other-player-outer-card-container {
+    display: inline-block;
+    margin-right: 5em;
+}
+
+.r {
+    background-color: var(--red);
+}
+
+.g {
+    background-color: var(--green);
+}
+
+.b {
+    background-color: var(--blue);
+}
+
+.y {
+    background-color: var(--yellow);
+}
+
+.w {
+    background-color: black;
+}
+
+.pile .wild, .pile .rectangle {
+    box-shadow: 0 0 0.3em white;
+}
+
+/* Wild */
+.wild {
+    border-radius: 50%;
+    transform: rotate(45deg);
+    border: solid 0.125em transparent;
+    border-top-color: var(--green);
+    border-right-color: var(--red);
+    border-bottom-color: var(--blue);
+    border-left-color: var(--yellow);
+}
+
+.corner .wild {
+    padding: 0.5em;
+}
+
+.center .wild {
+    margin: auto;
+    height: 1em;
+    width: 1em;
+}
+
+.color-choice-container {
+    display: grid;
+    grid-template-columns: 2.5em 2.5em;
+    grid-template-rows: 2.5em 2.5em;
+    column-gap: 1em;
+    row-gap: 1em;
+    margin-left: 1em;
+    transition-duration: 0.25s;
+}
+
+.color-choice.hidden:hover {
+    cursor: default;
+}
+
+.color-choice {
+    height: 2.5em;
+    width: 2.5em;
+}
+/* Wild End */
+
+/* Uno */
+@keyframes my-uno-container {
+    0%   { border-color: rgba(0, 255, 255, 1); }
+    50%  { border-color: rgba(0, 255, 255, 0); }
+    100% { border-color: rgba(0, 255, 255, 1); }
+}
+
+@keyframes other-uno-container {
+    0%   { border-color: rgba(255, 0, 0, 1); }
+    50%  { border-color: rgba(255, 0, 0, 0); }
+    100% { border-color: rgba(255, 0, 0, 1); }
+}
+
+.my-uno-container, .other-uno-container {
+    height: 5em;
+    width: 3em;
+    border: 0.5em solid red;
+}
+
+.my-uno-container {
+    animation: my-uno-container 2s infinite;
+}
+
+.other-uno-container {
+    animation: other-uno-container 2s infinite;
+}
+
+@keyframes my-uno-card {
+    0%   { border-color: #EEE; }
+    50%  { border-color: #0FF; }
+    100% { border-color: #EEE; }
+}
+
+@keyframes other-uno-card {
+    0%   { border-color: #EEE; }
+    50%  { border-color: #F00; }
+    100% { border-color: #EEE; }
+}
+
+.my-uno-card {
+    animation: my-uno-card 2s infinite;
+}
+
+.other-uno-card {
+    animation: other-uno-card 2s infinite;
+}
+/* Uno End */
+
+/* Center Rectangles */
+.draw, .wild-draw-four {
+    margin: auto;
+    display: grid;
+}
+
+.wild-draw-four {
+    height: 1.25em;
+    width: 1.25em;
+    grid-template-columns: 0.275em 0.275em 0.275em 0.275em;
+    grid-template-rows: 0.2em 0.2em 0.2em 0.2em 0.2em 0.2em;
+}
+
+.rectangle {
+    border-radius: 15%;
+    height: 0.5em;
+    width: 0.25em;
+    border: 0.1em solid;
+}
+
+.wild-draw-four .yellow {
+    border-color: var(--yellow);
+    /* rs / cs / re / ce */
+    grid-area: 4 / 1 / 5 / 2;
+}
+
+.wild-draw-four .red {
+    border-color: var(--red);
+    grid-area: 2 / 2 / 3 / 3;
+}
+
+.wild-draw-four .green {
+    border-color: var(--green);
+    grid-area: 3 / 3 / 4 / 4;
+}
+
+.wild-draw-four .blue {
+    border-color: var(--blue);
+    grid-area: 1 / 4 / 3 / 5;
+}
+
+.draw {
+    height: 1.25em;
+    width: 0.65em;
+    grid-template-columns: 0.13em 0.13em 0.13em 0.13em 0.13em;
+    grid-template-rows: 0.5em  0.125em 0.125em 0.5em;
+}
+
+.draw .one {
+    /* rs / cs / re / ce */
+    grid-area: 1 / 3 / 2 / 6;
+}
+
+.draw .two {
+    /* rs / cs / re / ce */
+    grid-area: 2 / 1 / 3 / 4;
+}
+/* Center Rectangles End */
+
+.underline {
+    text-decoration: underline;
+}
+
+#overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+}
