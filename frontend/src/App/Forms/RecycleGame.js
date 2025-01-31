@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import './Forms.css';
 
@@ -141,7 +141,8 @@ class RecycleGame extends Component {
         const { error } = data;
         if (error) this.props.setError(error);
         localStorage.removeItem('game_data');
-        this.props.history.push('/');
+        const navigate = useNavigate();
+        navigate("/");
       }
     );
   }

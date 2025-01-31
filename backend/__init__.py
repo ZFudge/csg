@@ -9,7 +9,7 @@ app = Flask(__name__, static_folder='../react_uno/build', static_url_path='')
 
 cache.init_app(app, config={
 	'CACHE_TYPE': 'FileSystemCache',
-	'CACHE_DIR': 'flask_cache',
+	'CACHE_DIR': '.flask_cache',
 	# in seconds
 	"CACHE_DEFAULT_TIMEOUT": 7200,
 })

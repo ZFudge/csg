@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import PlayerNameInput from './PlayerNameInput';
 import ExistingGameLink from './ExistingGameLink';
 import './Forms.css';
+import { withRouter } from '../../utils';
 import * as utils from '../utils';
-
 import webSocket from '../webSocket';
 
 
@@ -34,7 +34,8 @@ class JoinGame extends Component {
     if (active) {
       const { gameHash, playerName, playerHash } = this.state;
       localStorage.setItem('game_data', `${gameHash}___${playerName}___${playerHash}`);
-      this.props.history.push('/game');
+      const navigate = useNavigate();
+      navigate("/game");
     }
     if (error) {
       return this.setState({ error });
@@ -87,7 +88,8 @@ class JoinGame extends Component {
             const [ lSGameHash, lSPlayerName, lSPlayerHash ] = localGameData.split('___');
             const { playerName, gameHash } = this.state;
             if (lSPlayerName === playerName && lSGameHash === gameHash) {
-              this.props.history.push('/game');
+              const navigate = useNavigate();
+              navigate("/game");
             }
           }
         } else if (playerNames) {

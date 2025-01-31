@@ -3,7 +3,7 @@
 *__pycache__
 *fontawesome-free-5.15.3-web
 build
-flask_cache
+.flask_cache
 *.env*.local
 react_uno/.env
 *.env

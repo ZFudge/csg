@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import PlayerNameInput from './PlayerNameInput';
 import ExistingGameLink from './ExistingGameLink';
@@ -8,6 +8,7 @@ import * as utils from '../utils';
 
 import webSocket from '../webSocket';
 
+import { withRouter } from '../../utils';
 
 class CreateNewGame extends Component {
   constructor(props) {
@@ -108,7 +109,8 @@ class CreateNewGame extends Component {
           this.setState({ error });
         }
         if (playersData) {
-          this.props.history.push('/game');
+          const navigate = useNavigate();
+          navigate("/game");
         }
       }
     );

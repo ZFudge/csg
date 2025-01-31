@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import CreateNewGame from './Forms/CreateNewGame';
-import JoinGame from './Forms/JoinGame';
-import Game from './Game';
 import DefaultForm from './Forms/DefaultForm';
+import Game from './Game';
+import JoinGame from './Forms/JoinGame';
 
 
 class App extends Component {
@@ -12,32 +12,21 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div>
-          {/* A <Switch> looks through its children <Route>s and
+          {/* A <Routes> looks through its children <Route>s and
               renders the first one that matches the current URL. */}
-          <Switch>
-            <Route path="/new_game">
-              <CreateNewGame />
-            </Route>
-            <Route path="/join_game">
-              <JoinGame />
-            </Route>
-            <Route path="/game">
-              <Game />
-            </Route>
+          <Routes>
+            <Route path="/new_game" element={<CreateNewGame />} />
+            <Route path="/join_game" element={<JoinGame />} />
+            <Route path="/game" element={<Game />} />
             <Route
               path={
-                `/(${process.env.REACT_APP_GAME_HASH_REGEX}` +
-                  `{${process.env.REACT_APP_GAME_HASH_LENGTH}})`
+                `/:gameId(${process.env.REACT_APP_GAME_HASH_REGEX}` +
+                `{${process.env.REACT_APP_GAME_HASH_LENGTH}})`
               }
-              exact={false}
-              strict={false}
-              sensitive={false}
-              render={(props) => <JoinGame {...props} /> }
+              element={<JoinGame />}
             />
-            <Route path="/">
-              <DefaultForm />
-            </Route>
-          </Switch>
+            <Route path="/" element={<DefaultForm />} />
+          </Routes>
         </div>
       </BrowserRouter>
     );

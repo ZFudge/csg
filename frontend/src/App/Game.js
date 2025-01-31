@@ -1,18 +1,15 @@
 import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import RecycleGame from './Forms/RecycleGame';
 import WildCardColorChoice from './Cards/WildCardColorChoice';
-import CardContainer from './Cards/CardContainer';
 import PlayerContainer from './PlayerContainer';
 import Card from './Cards/Card';
-
 import PlayerDisplay from './PlayerDisplay';
 import Notification from './Notification';
-
+import { withRouter } from '../utils';
 import * as utils from './utils';
 import webSocket from './webSocket';
-
 
 class Game extends Component {
   constructor(props) {
@@ -259,7 +256,8 @@ class Game extends Component {
       );
     } else {
       // no active game, redirect to home page
-      this.props.history.push('/');
+      const navigate = useNavigate();
+      navigate("/");
     }
   }
 
