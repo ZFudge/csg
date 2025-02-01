@@ -2,14 +2,14 @@ FROM node:20-slim AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
-COPY . /uno
-WORKDIR /uno
+COPY . /csg
+WORKDIR /csg
 
-FROM base AS dev-uno
+FROM base AS dev-csg
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install
 
 FROM base
-COPY --from=dev-uno /uno/node_modules /uno/node_modules
+COPY --from=dev-csg /csg/node_modules /csg/node_modules
 
 EXPOSE 3075
 

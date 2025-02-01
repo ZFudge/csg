@@ -1,5 +1,5 @@
 {
-  "name": "uno",
+  "name": "csg",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -19,7 +19,7 @@
     "react-scripts": "^5.0.1",
     "socket.io-client": "^4.8.1"
   },
-  "proxy": "http://uno-be:5075",
+  "proxy": "http://csg-be:5075",
   "browserslist": {
     "production": [
       ">0.2%",

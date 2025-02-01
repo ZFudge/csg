@@ -5,7 +5,12 @@ from flask_socketio import SocketIO
 
 cache = Cache()
 
-app = Flask(__name__, static_folder='../react_uno/build', static_url_path='')
+app = Flask(
+	__name__,
+	root_path='/csg',
+	static_folder='build',
+	static_url_path='/'
+)
 
 cache.init_app(app, config={
 	'CACHE_TYPE': 'FileSystemCache',

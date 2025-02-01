@@ -1,24 +1,35 @@
 networks:
-  uno-network:
-    name: uno-network
+  csg-network:
+    name: csg-network
+
+volumes:
+  static-vol:
+    name: static-vol
 
 x-common-attrs: &common-attrs
   env_file: .env
   networks:
-    - uno-network
+    - csg-network
+  volumes:
+    - static-vol:/csg/build
 
 services:
-  uno-be:
+  csg-be:
     << : *common-attrs
     build: backend
-    image: uno-be:latest
-    container_name: uno-be
+    image: csg-be:latest
+    container_name: csg-be
     ports:
       - 5075:5075
-  uno-fe-dev:
+    develop:
+      watch:
+        - action: sync
+          path: ./
+          target: /csg
+  csg-fe-dev:
     << : *common-attrs
     build: frontend
-    image: uno-fe:latest
-    container_name: uno-fe-dev
+    image: csg-fe:latest
+    container_name: csg-fe-dev
     ports:
       - 3075:3075
