@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 
 import PlayerNameInput from './PlayerNameInput';
 import ExistingGameLink from './ExistingGameLink';
@@ -24,6 +24,7 @@ class CreateNewGame extends Component {
       'startRequestSent': null,
       'copied': null,
       'error': null,
+      'redirect': null,
     };
     this.handleSocketData = this.handleSocketData.bind(this);
     this.playerNameChange = this.playerNameChange.bind(this);
@@ -42,7 +43,7 @@ class CreateNewGame extends Component {
        better to store the URL in a hidden/high opacity w/ absolute position textarea element when
        the game hash is first received, then copy from that. */
     const { gameHash } = this.state;
-    const url = location.origin + '/' + gameHash;
+    const url = location.origin + '/join/' + gameHash;
     const gameHashTextArea = document.querySelector("#game-hash");
     gameHashTextArea.value = url;
     gameHashTextArea.select();
@@ -109,8 +110,7 @@ class CreateNewGame extends Component {
           this.setState({ error });
         }
         if (playersData) {
-          const navigate = useNavigate();
-          navigate("/game");
+          this.setState({ redirect: "/game" });
         }
       }
     );
@@ -127,7 +127,10 @@ class CreateNewGame extends Component {
   }
 
   render() {
-    const { gameHash, playerName, playerNames, playerColors, copied, error } = this.state;
+    const { gameHash, playerName, playerNames, playerColors, copied, error, redirect } = this.state;
+    if (redirect) {
+      return <Navigate to={redirect} />
+    }
 
     return (
       <>

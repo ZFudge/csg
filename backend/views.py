@@ -11,10 +11,10 @@ from . import utils
 from . import cache, socket, app
 
 load_dotenv()
-MAX_PLAYERS = int(getenv('REACT_APP_MAX_PLAYERS'))
-MAX_NAME_LENGTH = int(getenv('REACT_APP_MAX_NAME_LENGTH'))
-GAME_HASH_LENGTH = int(getenv('REACT_APP_GAME_HASH_LENGTH'))
-GAME_HASH_REGEX = getenv('REACT_APP_GAME_HASH_REGEX')
+MAX_PLAYERS = int(getenv('REACT_APP_MAX_PLAYERS') or 6)
+MAX_NAME_LENGTH = int(getenv('REACT_APP_MAX_NAME_LENGTH') or 10)
+GAME_HASH_LENGTH = int(getenv('REACT_APP_GAME_HASH_LENGTH') or 8)
+GAME_HASH_REGEX = getenv('REACT_APP_GAME_HASH_REGEX') or '[a-zA-Z0-9]'
 
 main = Blueprint('main', __name__)
 
@@ -23,10 +23,10 @@ class GameHashConverter(BaseConverter):
 app.url_map.converters['game_hash'] = GameHashConverter
 
 # use the converter in the route
-@app.route('/<game_hash>')
+@app.route('/join/<game_hash>')
 @main.route('/')
-@main.route('/new_game')
-@main.route('/join_game')
+@main.route('/new')
+@main.route('/join')
 @main.route('/game')
 def serve(game_hash=''):
 	"""Serve static files."""

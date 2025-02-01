@@ -75,7 +75,7 @@ class RecycleGame extends Component {
         'player_colors': playerColors,
       },
       data => {
-        console.log(`/new_game resp data: ${JSON.stringify(data)}`);
+        console.log(`/new resp data: ${JSON.stringify(data)}`);
         const { playerHash, error } = data;
         if (error) {
           this.props.setError(error);
@@ -101,7 +101,7 @@ class RecycleGame extends Component {
         'recycled_game': true,
       },
       data => {
-        console.log(`/new_game resp data: ${JSON.stringify(data)}`);
+        console.log(`/new resp data: ${JSON.stringify(data)}`);
         const { playerHash, error } = data;
         if (error) {
           this.props.setError(error);

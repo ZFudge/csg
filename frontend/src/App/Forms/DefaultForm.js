@@ -16,10 +16,10 @@ class DefaultForm extends Component {
         <img id='svg-cookie' src={cookiePath} />
         <div id='link-options'>
           <div>
-            <Link name='new-game' to='/new_game' className='link'>New Game</Link>
+            <Link name='new-game' to='/new' className='link'>New Game</Link>
           </div>
           <div>
-            <Link name='join-game' to='/join_game' className='link'>Join Game</Link>
+            <Link name='join-game' to='/join' className='link'>Join Game</Link>
           </div>
           <ExistingGameLink />
         </div>

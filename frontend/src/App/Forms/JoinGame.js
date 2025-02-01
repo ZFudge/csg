@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 
 import PlayerNameInput from './PlayerNameInput';
 import ExistingGameLink from './ExistingGameLink';
@@ -22,6 +22,7 @@ class JoinGame extends Component {
       'readOnly': false,
       'addPlayerRequestSent': null,
       'error': null,
+      'redirect': null,
     };
     this.playerNameChange = this.playerNameChange.bind(this);
     this.gameHashChange = this.gameHashChange.bind(this);
@@ -34,8 +35,7 @@ class JoinGame extends Component {
     if (active) {
       const { gameHash, playerName, playerHash } = this.state;
       localStorage.setItem('game_data', `${gameHash}___${playerName}___${playerHash}`);
-      const navigate = useNavigate();
-      navigate("/game");
+      this.setState({ redirect: "/game" });
     }
     if (error) {
       return this.setState({ error });
@@ -55,9 +55,10 @@ class JoinGame extends Component {
   }
 
   getGameHashFromQueryParam() {
-    const path = location.pathname.slice(1);
-    if (path === 'join_game') return;
-    const hashLength = Number(process.env.REACT_APP_GAME_HASH_LENGTH);
+    const path = location.pathname.slice(6);
+    if (path === 'join') return;
+    // const hashLength = Number(process.env.REACT_APP_GAME_HASH_LENGTH);
+    const hashLength = 8;
     if (path.length === hashLength) {
       this.setState({ 'gameHash': path, readOnly: true });
     }
@@ -88,8 +89,7 @@ class JoinGame extends Component {
             const [ lSGameHash, lSPlayerName, lSPlayerHash ] = localGameData.split('___');
             const { playerName, gameHash } = this.state;
             if (lSPlayerName === playerName && lSGameHash === gameHash) {
-              const navigate = useNavigate();
-              navigate("/game");
+              this.setState({ redirect: "/game" });
             }
           }
         } else if (playerNames) {
@@ -113,8 +113,11 @@ class JoinGame extends Component {
   }
 
   render() {
-    const { playerName, playerNames, playerColors, error, gameHash, readOnly } = this.state;
+    const { playerName, playerNames, playerColors, error, gameHash, readOnly, redirect } = this.state;
     const activeButton = playerName && gameHash.length === 8;
+    if (redirect) {
+      return <Navigate to={redirect} />
+    }
 
     return (
       <>

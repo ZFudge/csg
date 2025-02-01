@@ -88,7 +88,7 @@ class Driver(object):
 		new_game_link.click()
 
 		print(self.driver.current_url)
-		assert self.driver.current_url == Driver.host + 'new_game'
+		assert self.driver.current_url == Driver.host + 'new'
 		name_input = self.driver.find_element_by_name('player-name')
 		name_input.send_keys(self.player_name)
 		sleep(STEP_SPEED)
@@ -106,7 +106,7 @@ class Driver(object):
 		join_button = self.driver.find_element_by_name('join-game')
 		join_button.click()
 		sleep(STEP_SPEED)
-		assert self.driver.current_url == Driver.host + 'join_game'
+		assert self.driver.current_url == Driver.host + 'join'
 		game_hash_input = self.driver.find_element_by_name('game-hash')
 		game_hash_input.send_keys(Driver.game_hash)
 		sleep(STEP_SPEED)

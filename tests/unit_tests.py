@@ -1,13 +1,14 @@
 import unittest
 from os import getenv
 
-from api_uno import utils
-from api_uno import deck
+from backend import utils
+from backend import deck
 
 from dotenv import load_dotenv
 
 load_dotenv()
-GAME_HASH_LENGTH = int(getenv('REACT_APP_GAME_HASH_LENGTH'))
+# GAME_HASH_LENGTH = int(getenv('REACT_APP_GAME_HASH_LENGTH'))
+GAME_HASH_LENGTH = 8
 
 class GameTest(unittest.TestCase):
 
