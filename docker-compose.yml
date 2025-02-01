@@ -1,0 +1,24 @@
+networks:
+  uno-network:
+    name: uno-network
+
+x-common-attrs: &common-attrs
+  env_file: .env
+  networks:
+    - uno-network
+
+services:
+  uno-be:
+    << : *common-attrs
+    build: backend
+    image: uno-be:latest
+    container_name: uno-be
+    ports:
+      - 5075:5075
+  uno-fe-dev:
+    << : *common-attrs
+    build: frontend
+    image: uno-fe:latest
+    container_name: uno-fe-dev
+    ports:
+      - 3075:3075
