@@ -124,7 +124,7 @@ class JoinGame extends Component {
         <nav>
           <Link to='/' className='link'>Back</Link>
         </nav>
-        <img id='svg-cookie' src={utils.cookiePath} />
+        <img id='zfudge-icon' src={utils.zfudgeIconPath} />
         <div className='align-center'>
           {
             playerNames ?

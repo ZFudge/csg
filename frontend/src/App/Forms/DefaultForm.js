@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 import './Forms.css';
-import { cookiePath } from '../utils';
+import { zfudgeIconPath } from '../utils';
 
 import ExistingGameLink from './ExistingGameLink';
 
@@ -13,7 +13,7 @@ class DefaultForm extends Component {
     return (
       <>
         <nav></nav>
-        <img id='svg-cookie' src={cookiePath} />
+        <img id='zfudge-icon' src={zfudgeIconPath} />
         <div id='link-options'>
           <div>
             <Link name='new-game' to='/new' className='link'>New Game</Link>

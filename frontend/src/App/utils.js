@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-const cookiePath = (process.env.PUBLIC_URL + 'images/cookie_face.svg');
+const zfudgeIconPath = (process.env.PUBLIC_URL + 'images/android-chrome-512x512.png');
 
 
 function errorDisplay(error) {
@@ -87,7 +87,7 @@ function getRandomRotationDegrees() {
 
 
 export {
-  cookiePath,
+  zfudgeIconPath,
   errorDisplay,
   playersList,
   rejoinedPlayersList,
