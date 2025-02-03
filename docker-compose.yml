@@ -21,11 +21,8 @@ services:
     container_name: csg-be
     ports:
       - 5075:5075
-    develop:
-      watch:
-        - action: sync
-          path: ./
-          target: /csg
+    volumes:
+      - ./backend:/csg
   csg-fe-dev:
     << : *common-attrs
     build: frontend

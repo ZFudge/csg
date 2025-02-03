@@ -312,7 +312,7 @@ class Game extends Component {
     return (
       <>
         {/* Trigger a transparent, click-blocking overlay if currently running card animations. */}
-        {overlay ? <div id='overlay'></div> : null}
+        {overlay && <div id='overlay'></div>}
 
         {/* Trigger notification for all players when a player has an uno. */}
         {
@@ -385,20 +385,20 @@ class Game extends Component {
         {/* Display all player card hands */}
         {
           playerNamesCardsOrder.map((name, i) => {
-            const me = name === playerName;
+            const isMe = name === playerName;
             return (
               <PlayerContainer
                 key={name}
                 name={name}
                 color={playerColors[name]}
-                cards={me ? myCards : players[name]}
-                me={me}
-                nameClick={me ? this.sortCards : null}
-                cardClick={me ? this.playCard : null}
+                cards={isMe ? myCards : players[name]}
+                me={isMe}
+                nameClick={isMe ? this.sortCards : null}
+                cardClick={isMe ? this.playCard : null}
                 disabled={disabled}
-                disableInput={me ? this.disableInput : null}
-                enableInput={me ? this.enableInput : () => {}}
-                validateCardClickable={me ? this.validateCardClickable : null}
+                disableInput={isMe ? this.disableInput : null}
+                enableInput={this.enableInput}
+                validateCardClickable={isMe ? this.validateCardClickable : null}
                 drawCount={drawCount}
                 currentPlayer={currentPlayer}
                 pileXYOffsets={[ pileX, pileY ]}

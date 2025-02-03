@@ -46,8 +46,8 @@ class Card extends Component {
         current.style.top = `${yMove}px`;
         current.style.transform = `rotate(${getRandomRotationDegrees()}deg)`;
         setTimeout(() => {
-          // enableInput is called inside playCard which is called by click
           this.props.click(color, type, this.props.index);
+          this.props.enableInput();
         }, CARD_TRANSITION_MS);
       }, 100);
       return;
@@ -94,8 +94,12 @@ class Card extends Component {
       setTimeout(() => {
         current.classList.remove('hidden');
         current.style.position = 'absolute';
+        if (myCard) {
+          current.style.top = `${yEnd}px`;
+        } else {
+          current.style.top = `0px`;
+        }
         current.style.left = `${xEnd}px`;
-        current.style.top = `${yEnd}px`;
         current.style.transform = 'rotate(0deg)';
         setTimeout(() => {
           current.style.transform = '';
