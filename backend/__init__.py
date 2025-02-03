@@ -26,8 +26,12 @@ socket = SocketIO(
 	engineio_logger=True
 )
 
-from .views import main
+from .views.main import main
 app.register_blueprint(main)
+from .views.session import session
+app.register_blueprint(session)
+from .views.gameplay import gameplay
+app.register_blueprint(gameplay)
 
 if __name__ == '__main__':
 	socket.run(app)
