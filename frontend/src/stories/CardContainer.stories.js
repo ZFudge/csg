@@ -16,11 +16,11 @@ export const Default = {
   args: {
     myCards: true,
     cards: [
-      'r1',
+      'y1',
+      'r6',
       'g+2',
       'br',
-      'rs',
-      'ys',
+      'bs',
       'w',
       'w+4',
     ],

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { FaBan } from "@react-icons/all-files/fa/FaBan";
+import { FaSyncAlt } from "@react-icons/all-files/fa/FaSyncAlt";
 
 import './Cards.css';
 import { getRandomRotationDegrees } from '../utils';
@@ -162,11 +164,11 @@ class Card extends Component {
       }
     } else if (type === 's') {
       // skip
-      cornerContent = <i className="fas fa-ban"/>;
+      cornerContent = <FaBan />;
       centerContent = cornerContent;
     } else if (type === 'r') {
       // reverse
-      cornerContent = <i className="fas fa-sync-alt"/>;
+      cornerContent = <FaSyncAlt />;
       centerContent = cornerContent;
     }
 
