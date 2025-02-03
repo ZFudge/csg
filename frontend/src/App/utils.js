@@ -1,7 +1,8 @@
 import React from 'react';
 
 
-const zfudgeIconPath = (process.env.PUBLIC_URL + 'images/android-chrome-512x512.png');
+// const zfudgeIconPath = (process.env.PUBLIC_URL + 'images/android-chrome-512x512.png');
+const zfudgeIconPath = '/images/android-chrome-512x512.png';
 
 
 function errorDisplay(error) {

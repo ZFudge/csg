@@ -237,3 +237,8 @@ button.enabled:hover {
   z-index: 99;
 }
 
+#zfudge-icon {
+  height: 10em;
+  margin: auto;
+  display: block;
+}
