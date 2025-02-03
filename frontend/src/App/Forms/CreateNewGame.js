@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link, Navigate } from 'react-router-dom';
+import { FaHandPointRight } from '@react-icons/all-files/fa/FaHandPointRight';
 
 import PlayerNameInput from './PlayerNameInput';
 import ExistingGameLink from './ExistingGameLink';
@@ -50,6 +51,9 @@ class CreateNewGame extends Component {
     document.execCommand("copy");
     gameHashTextArea.value = gameHash;
     this.setState({ copied: true });
+    setTimeout(() => {
+      this.setState({ copied: false });
+    }, 3000);
   }
 
   handleSocketData(socketData) {
@@ -145,10 +149,20 @@ class CreateNewGame extends Component {
                 <h1>Waiting for players to join...</h1>
                 <div className='left-aligned'>
                   <div id='game-hash-container'>
-                    <span id='game-hash-title'>Game Hash</span>
+                    <div id='game-hash-instructions'>
+                      <div>
+                        <div>
+                          Click this to copy the URL to your clipboard!
+                        </div>
+                        <div>
+                          Then send it to your friends!
+                        </div>
+                      </div>
+                      <FaHandPointRight />
+                    </div>
                     <div>
                       <textarea id='game-hash' value={gameHash} readOnly onClick={this.copyGameHash}></textarea>
-                      {copied ? <div id='g'>Copied!</div> : ''}
+                      {copied && <div id='copied'>Copied!</div>}
                     </div>
                   </div>
                   {utils.playersList(playerColors)}

@@ -1,3 +1,13 @@
+@keyframes glow {
+    0%   { border-color: #bbb; }
+    60%  { border-color: #fff; }
+    100% { border-color: #bbb; }
+}
+
+@keyframes fade {
+    0%   { opacity: 1; }
+    100%  { opacity: 0; }
+}
 
 .input-container {
     display: flex;
@@ -22,10 +32,10 @@
     align-items: center;
     justify-content: space-around;
     width: 20rem;
+    margin-bottom: 0.75em;
 }
 
 #game-hash-container div div {
-    position: absolute;
     margin: auto;
     text-align: center;
 }
@@ -36,13 +46,39 @@
     padding: 0.25em 0.5em;
 }
 
-#game-hash-title {
-    text-decoration: none;
+#game-hash-instructions {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    font-size: 0.7rem;
+    column-gap: 1em;
+}
+
+#game-hash-instructions div {
+    align-items: center;
+    min-width: 8em;
+    column-gap: 1em;
+    padding: 0;
+}
+
+#game-hash-instructions svg {
+    font-size: 1.25rem;
 }
 
 #game-hash {
     font-size: 1.25rem;
     height: 1.5rem;
+    resize: none;
+    cursor: pointer;
+    border: 0.125em solid white;
+    border-radius: 0.25em;
+    animation: glow 3s infinite;
+    user-select: none;
+    overflow: auto;
+    outline: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
     resize: none;
 }
 
@@ -109,4 +145,10 @@ textarea {
 
 .player-rejoin-status.rejected {
     background-color: red;
+}
+
+#copied {
+    opacity: 0;
+    animation: fade 3s;
+    position: absolute;
 }
