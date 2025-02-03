@@ -13,3 +13,5 @@ build
 *.env.test
 *.env.production
 .pnpm-store/
+
+*storybook.log
