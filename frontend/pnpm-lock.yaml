@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      corepack:
-        specifier: ^0.31.0
-        version: 0.31.0
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -2412,11 +2409,6 @@ packages:
 
   core-util-is@1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
-
-  corepack@0.31.0:
-    resolution: {integrity: sha512-PFXOWB1S3gzr8Afuwq1sslrxDzLKsef6bu8NXKPxCBJAy54FXm86NutB/kjiPhwjSwV3hMzKSnLFzxTBlWNUqA==}
-    engines: {node: ^18.17.1 || ^20.10.0 || >=22.11.0}
-    hasBin: true
 
   cosmiconfig@6.0.0:
     resolution: {integrity: sha512-xb3ZL6+L8b9JLLCx3ZdoZy4+2ECphCMo2PwqgP1tlfVq6M6YReyzBJtvWWtbDSpNr9hn96pkCiZqUcFEc+54Qg==}
@@ -9053,8 +9045,6 @@ snapshots:
   core-js@3.40.0: {}
 
   core-util-is@1.0.3: {}
-
-  corepack@0.31.0: {}
 
   cosmiconfig@6.0.0:
     dependencies:
