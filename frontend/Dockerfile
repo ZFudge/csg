@@ -19,5 +19,3 @@ FROM base
 COPY --from=dev-csg /csg/node_modules /csg/node_modules
 
 EXPOSE 3075
-
-CMD [ "pnpm", "start" ]

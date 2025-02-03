@@ -33,7 +33,7 @@ logs:
 	@docker-compose logs --follow
 
 shell-fe:
-	@docker-compose exec -it $(FE_CONTAINER) sh
+	@docker-compose exec -it $(FE_CONTAINER) bash
 
 .PHONY: install
 install:

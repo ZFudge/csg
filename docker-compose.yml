@@ -33,3 +33,6 @@ services:
     container_name: csg-fe-dev
     ports:
       - 3075:3075
+    command: ["pnpm", "start"]
+    volumes:
+      - ./frontend:/csg
