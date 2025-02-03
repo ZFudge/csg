@@ -46,38 +46,6 @@ class Card extends Component {
         setTimeout(() => {
           // enableInput is called inside playCard which is called by click
           this.props.click(color, type, this.props.index);
-          /*
-            It's important that the below styling resets stay here.
-            For some reason, when updating the ref stylings on a Card
-            that comes right before another Card whose color and value
-            are identical, and therefore whose index is only one value higher,
-            the above styling updates affect that card as well.
-            Attempts to fix this using keys, data attributes, and
-            validating an index id to the index all failed.
-            Removing setTimeouts had no effect.
-            Excessive logging to the console strongly suggests
-            that the code only runs one time.
-            I believe the issue lies somewhere inside of the 'current'
-            object accessed through the ref.
-            Somehow it points to both nodes in the DOM.
-
-            I might be using refs incorrectly.
-
-            The only thing left I can think of to try would be
-            using this Component as yet another container
-            for a new child Component, passing myRef as a prop to
-            the child Component, and triggering the above style updates
-            inside of the child Component through that prop.
-            Reference the setTextInputRef example at
-            https://reactjs.org/docs/refs-and-the-dom.html
-          */
-          // another setTimeout for smoothness
-          setTimeout(() => {
-            current.style.position = '';
-            current.style.left = `${totalOffsetLeft}px`;
-            current.style.top = `${yStart}px`;
-            this.props.enableInput()
-          }, 100);
         }, CARD_TRANSITION_MS);
       }, 100);
       return;
@@ -231,4 +199,3 @@ class Card extends Component {
 }
 
 export default Card;
-
