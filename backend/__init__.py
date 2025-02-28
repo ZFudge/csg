@@ -32,6 +32,8 @@ from .views.session import session
 app.register_blueprint(session)
 from .views.gameplay import gameplay
 app.register_blueprint(gameplay)
+from .views.actions import misc
+app.register_blueprint(misc)
 
 if __name__ == '__main__':
 	socket.run(app)
