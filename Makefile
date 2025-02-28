@@ -5,15 +5,17 @@ BE_CONTAINER := csg-be
 help:
 	@echo "Usage: make [command]"
 	@echo "Commands:"
-	@echo "  run:                   Run the containers"
-	@echo "  clean:                 Stop and remove the containers"
-	@echo "  shell-fe:              Open a shell in the frontend container"
-	@echo "  shell-be:              Open a shell in the backend container"
-	@echo "  logs:                  Show the logs of the containers"
-	@echo "  static:                Build the frontend static files"
 	@echo "  help:                  Show this help message"
 	@echo "  build:                 Build the containers"
-	@echo ""
+	@echo "  run:                   Run the containers"
+	@echo "  clean:                 Stop and remove the containers"
+	@echo "  logs:                  Show the logs of the containers"
+	@echo "  shell-fe:              Open a shell in the frontend container"
+	@echo "  install:               Install node modules"
+	@echo "  static:                Build the frontend static files"
+	@echo "  storybook:             Run the storybook server"
+	@echo "  storybook-build:       Build the storybook"
+	@echo "  shell-be:              Open a shell in the backend container"
 
 .PHONY: build
 build:
@@ -21,7 +23,7 @@ build:
 
 .PHONY: run
 run: clean
-	@docker-compose up -d
+	@docker-compose up -d --remove-orphans
 
 .PHONY: clean
 clean:
@@ -32,6 +34,7 @@ clean:
 logs:
 	@docker-compose logs --follow
 
+# Frontend
 shell-fe:
 	@docker-compose exec -it $(FE_CONTAINER) bash
 
@@ -51,5 +54,6 @@ storybook:
 storybook-build:
 	@docker-compose exec -it $(FE_CONTAINER) sh -c 'pnpm build-storybook'
 
+# Backend
 shell-be:
 	@docker-compose exec -it $(BE_CONTAINER) sh
