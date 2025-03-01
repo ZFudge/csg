@@ -2,7 +2,7 @@ import hashlib, base64
 from time import time
 from random import random, choice
 
-import deck
+import src.deck as deck
 
 
 player_colors = [

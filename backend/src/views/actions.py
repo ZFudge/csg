@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 
-from csg import cache, socket, utils
+from src import cache, socket, utils
 
 
 misc = Blueprint('misc', __name__)

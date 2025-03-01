@@ -2,16 +2,17 @@ FROM python:3.8-alpine
 
 LABEL org.opencontainers.image.authors="zacheryfudge+docker@gmail.com"
 
-WORKDIR /csg
-COPY . /csg/
+WORKDIR /backend
+COPY . /backend/
 RUN mkdir -p /var/logs/csg/
 
 RUN apk add gcc python3-dev
 
 RUN pip install -r requirements.txt
 
-ENV PYTHONPATH=$PYTHONPATH:/csg/
-ENV FLASK_APP=/csg
+ENV PYTHONPATH=$PYTHONPATH:/backend/src
+
+ENV FLASK_APP=/backend/src/__init__.py
 ENV FLASK_ENV=development
 
 EXPOSE 5075

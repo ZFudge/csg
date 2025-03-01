@@ -11,7 +11,7 @@ x-common-attrs: &common-attrs
   networks:
     - csg-network
   volumes:
-    - static-vol:/csg/build
+    - static-vol:/backend/build
 
 services:
   csg-be:
@@ -22,7 +22,7 @@ services:
     ports:
       - 5075:5075
     volumes:
-      - ./backend:/csg
+      - ./backend:/backend
   csg-fe-dev:
     << : *common-attrs
     build: frontend

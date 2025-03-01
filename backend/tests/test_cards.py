@@ -1,4 +1,5 @@
-import deck, utils
+import src.deck as deck
+import src.utils as utils
 
 GAME_HASH_LENGTH = 8
 
