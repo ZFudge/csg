@@ -1,8 +1,6 @@
 import unittest
-from os import getenv
 
-from backend import utils
-from backend import deck
+from src import deck, utils
 
 from dotenv import load_dotenv
 

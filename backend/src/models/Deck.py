@@ -1,4 +1,5 @@
 import random
+from typing import Iterable
 
 
 class DeckAttrs:
@@ -10,6 +11,7 @@ class DeckAttrs:
         '+4': 4,
     }
 
+    @staticmethod
     def get_base_deck():
         """Returns a tuple of all the cards expected in a basic deck."""
         base_deck = []
@@ -41,13 +43,15 @@ class Deck(BaseDeck):
         return tuple(self._cards)
 
     @cards.setter
-    def cards(self, value):
+    def cards(self, value: Iterable[str]):
         if not isinstance(value, (tuple, list)):
             raise ValueError("Cards must be a tuple or list")
         self._cards = tuple(value)
 
-    def _add_cards(self, cards: tuple):
+    def _add_cards(self, cards: Iterable[str]):
         """Add a tuple of cards to the deck."""
+        if not isinstance(cards, (tuple, list)):
+            raise ValueError("Cards must be a tuple or list")
         self._cards = tuple(self._cards) + tuple(cards)
 
     def draw_cards(self, num: int):# -> tuple[str]:
@@ -73,3 +77,5 @@ class Deck(BaseDeck):
         random.shuffle(new_deck)
         return tuple(new_deck)
 
+    def __len__(self):
+        return len(self.cards)
