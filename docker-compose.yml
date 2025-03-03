@@ -14,11 +14,11 @@ x-common-attrs: &common-attrs
     - static-vol:/backend/build
 
 services:
-  csg-be:
+  csg-backend:
     << : *common-attrs
     build: backend
-    image: csg-be:latest
-    container_name: csg-be
+    image: csg-backend:latest
+    container_name: csg-backend
     ports:
       - 5075:5075
     volumes:

@@ -1,5 +1,5 @@
 FE_CONTAINER := csg-fe-dev
-BE_CONTAINER := csg-be
+BE_CONTAINER := csg-backend
 
 .PHONY: help
 help:
@@ -10,6 +10,8 @@ help:
 	@echo "  run:                   Run the containers"
 	@echo "  clean:                 Stop and remove the containers"
 	@echo "  logs:                  Show the logs of the containers"
+	@echo "  build-be:              Build the backend container"
+	@echo "  run-be:                Run the backend container"
 	@echo "  shell-fe:              Open a shell in the frontend container"
 	@echo "  install:               Install node modules"
 	@echo "  static:                Build the frontend static files"
@@ -33,6 +35,14 @@ clean:
 .PHONY: logs
 logs:
 	@docker-compose logs --follow
+
+.PHONY: build-be
+build-be:
+	@docker build -t $(BE_CONTAINER) -f backend/Dockerfile backend
+
+.PHONY: run-be
+run-be:
+	@docker run -p 5075:5075 $(BE_CONTAINER)
 
 # Frontend
 shell-fe:
