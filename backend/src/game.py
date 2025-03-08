@@ -28,7 +28,6 @@ def get_game_data(game_hash: str, player_name: str, player_hash: str):
 	del game['player_hashes']
 	return jsonify({'gameData': game})
 
-
 def play_card(*args, **kwargs):
 	player_name = kwargs.get('player_name')
 	game_hash = kwargs.get('game_hash')
@@ -53,4 +52,3 @@ def play_card(*args, **kwargs):
 		return jsonify({'error': utils.errors['incorrect_player_hash'](player_hash)})
 
 	game['players'][player_name].play_card(card_type, card_color)
-

@@ -40,11 +40,9 @@ class Game:
 		if not self.started:
 			raise ValueError('Game not started')
 		logger.info(f'Playing card {card} for player {player}')
-		print(f'Playing card {card} for player {player}')
 
 		player = self.players.get_player(player, player_hash)
 		card = Card(card)
-		print('Card', repr(card))
 		try:
 			self._validate_move(player, card)
 		except ValueError as e:
@@ -66,13 +64,9 @@ class Game:
 		self.players.next_player()
 		if card.draw_count:
 			# draw cards against the current player
-			self.deck.draw_cards(card.draw_count)
-		# draw_count = card.draw_count
-		# draw_target_player_cards = self.players.players[self.players.current_player_index]
-		# utils.draw_cards_from_deck(
-		# 	draw_target_player_cards,
-		# 	self.deck,
-		# 	draw_count)
+			new_cards = self.deck.draw_cards(card.draw_count)
+			self.players.current_player.accept_cards(new_cards)
+
 		return played_card
 
 	def choose_color(self, *, player: str, player_hash: str, color: str):
@@ -87,6 +81,7 @@ class Game:
 		self.players.next_player()
 
 		if last_card.draw_count:
+			# draw cards against the current player
 			new_cards = self.deck.draw_cards(last_card.draw_count)
 			self.players.current_player.accept_cards(new_cards)
 
