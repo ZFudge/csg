@@ -163,3 +163,48 @@ def test_game_play_reverse_card_two_players():
     ))
     assert played_card == card
     assert game.current_player == game.players.players[0]
+
+
+def test_game_play_skip_card_two_players():
+    game = Game("Cleo", shuffle=False)
+    game.add_new_player("Mathias")
+    game.start()
+
+    current_player = game.current_player
+    # Red skip card
+    card = Card("rs")
+    current_player.accept_cards(card.value)
+
+    # Manually set the current card to red to allow the red skip card to be played
+    game.current_card = Card("r")
+    played_card = Card(game.play_card(
+        player="Cleo",
+        player_hash=current_player.hash,
+        card=card.value,
+        index=7
+    ))
+    assert played_card == card
+    assert game.current_player == game.players.players[0]
+
+
+def test_game_play_skip_card_three_players():
+    game = Game("Cleo", shuffle=False)
+    game.add_new_player("Mathias")
+    aloysius = game.add_new_player("Aloysius")
+    game.start()
+
+    # Yellow skip card
+    card = Card("ys")
+    current_player = game.current_player
+    current_player.accept_cards(card.value)
+
+    # Manually set the current card to yellow to allow the yellow skip card to be played
+    game.current_card = Card("y")
+    played_card = Card(game.play_card(
+        player="Cleo",
+        player_hash=current_player.hash,
+        card=card.value,
+        index=7
+    ))
+    assert played_card == card
+    assert game.current_player == aloysius

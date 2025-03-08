@@ -64,7 +64,7 @@ class Game:
 			pass
 		elif card.reverse:
 			# Reverse cards work as skip cards in 2-player games.
-			if 2 < len(self.players.players):
+			if 2 < len(self.players):
 				# Reverse the player direction
 				self.players.reverse_player_direction()
 				self.players.next_player()
@@ -73,6 +73,9 @@ class Game:
 			# draw cards against the current player
 			new_cards = self.deck.draw_cards(card.draw_count)
 			self.players.current_player.accept_cards(new_cards)
+		elif card.skip:
+			self.players.next_player()
+			self.players.next_player()
 
 		return played_card
 
