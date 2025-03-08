@@ -1,10 +1,36 @@
-from src.models.Hand import Hand
+import hashlib
+import time
+from typing import Iterable
+
+from models.Hand import Hand
 
 
 class Player:
     def __init__(self, name: str):
-        self._name = name
-        self._hand = Hand()
+        self.name = name
+        self.hand = Hand()
+        self.hash = None
+
+    def init_hash(self):
+        self._hash = hashlib.sha256(
+            self.name.encode() +
+            str(self.hand.cards).encode() +
+            str(time.time()).encode()
+        ).hexdigest()
+
+    def accept_cards(self, cards: Iterable[str] | str):
+        self._hand.add_cards(cards)
+
+    def play_card(self, *, value: str, index: int):
+        return self._hand.play_card(value, index)
+
+    @property
+    def hash(self):
+        return self._hash
+
+    @hash.setter
+    def hash(self, value: str):
+        self._hash = value
 
     @property
     def name(self):
@@ -21,14 +47,8 @@ class Player:
         return self._hand
 
     @hand.setter
-    def hand(self, *args):
-        return
-
-    def accept_cards(self, cards):# Iterable[str] | str):
-        self._hand.add_cards(cards)
-
-    def play_card(self, card_value: str, index: int):
-        return self._hand.play_card(card_value, index)
+    def hand(self, value: Hand):
+        self._hand = value
 
     def __str__(self):
         return f"{self.name}: {self.hand}"
@@ -39,7 +59,7 @@ class Player:
     def __eq__(self, other):
         return (
             self.name == other.name and
-            self.hand == other.hand
+            self.hash == other.hash
         )
 
     def __ne__(self, other):

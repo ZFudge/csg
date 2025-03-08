@@ -3,7 +3,7 @@ from typing import Iterable
 
 class Hand:
     def __init__(self, cards: Iterable[str]=None):
-        self._cards = tuple()
+        self.cards = tuple()
         if cards is not None:
             self.add_cards(cards)
 
@@ -11,23 +11,27 @@ class Hand:
     def cards(self):
         return tuple(self._cards)
 
+    @cards.setter
+    def cards(self, value: tuple):
+        self._cards = value
+
     def play_card(self, card_value: str, index: int) -> str:
         """Play a card from the hand by value and index.
         Card value has already been validated against the previously played card."""
-        if index < 0 or index >= len(self.cards):
+        if index < 0 or len(self.cards) <= index:
             raise IndexError(f"Invalid index {index} for hand {self.cards}")
         card = self.cards[index]
         if card != card_value:
             raise ValueError(f"Card {card_value} not found in at index {index} of hand {self.cards}")
-        self._cards = tuple(self._cards[:index] + self._cards[index+1:])
+        self.cards = tuple(self.cards[:index] + self.cards[index+1:])
         return card
 
-    def add_cards(self, cards):#: Iterable[str] | str):
+    def add_cards(self, cards: Iterable[str] | str):
         """Add the results of a single draw, draw 2 or draw 4 to the hand."""
         if isinstance(cards, (list, tuple)):
-            self._cards = self._cards + tuple(cards)
+            self.cards = self.cards + tuple(cards)
         elif isinstance(cards, str):
-            self._cards = self._cards + (cards,)
+            self.cards = self.cards + (cards,)
         else:
             raise ValueError(f"Invalid cards type {type(cards)} of {cards}")
 
@@ -35,7 +39,7 @@ class Hand:
     def card_count(self) -> int:
         return len(self.cards)
 
-    def _as_mapped_counts(self) -> dict:#[str, int]:
+    def _as_mapped_counts(self) -> dict[str, int]:
         """Return a dictionary of card values and their counts."""
         result = {}
         for card in self.cards:

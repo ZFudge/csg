@@ -1,3 +1,5 @@
+import pytest
+
 from src.models import Player, PlayerManager
 
 def test_player_manager_init():
@@ -12,8 +14,13 @@ def test_player_manager_add_player():
 
 def test_player_manager_remove_player():
     player_manager = PlayerManager("Cleo")
+    player_manager.add_player("Aloysius")
     player_manager.remove_player("Cleo")
-    assert player_manager.players == tuple()
+    assert player_manager.players == (Player("Aloysius"),)
+
+def test_player_manager_remove_player_last_player():
+    with pytest.raises(ValueError):
+        PlayerManager("Cleo").remove_player("Cleo")
 
 def test_player_manager_next_player():
     player_manager = PlayerManager("Cleo")
@@ -43,12 +50,10 @@ def test_player_manager_get():
     assert player_manager.names == ("Cleo", "Aloysius")
 
 def test_player_manager_current_player():
-    player_manager = PlayerManager("Cleo")
-    assert player_manager.current_player.name == "Cleo"
+    assert PlayerManager("Cleo").current_player.name == "Cleo"
 
 def test_player_manager_owner():
-    player_manager = PlayerManager("Cleo")
-    assert player_manager.owner.name == "Cleo"
+    assert PlayerManager("Cleo").owner.name == "Cleo"
 
 def test_player_manager_players():
     player_manager = PlayerManager("Cleo")

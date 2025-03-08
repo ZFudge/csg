@@ -21,7 +21,7 @@ def test_player_repr():
 def test_player_play_card():
     player = Player("Cleo")
     player.accept_cards(['r1', 'g2', 'b3', 'y4', 'w', 's', 'w+4'])
-    card = player.play_card('r1', 0)
+    card = player.play_card(value='r1', index=0)
     assert card == 'r1'
     assert player.hand.cards == ('g2', 'b3', 'y4', 'w', 's', 'w+4')
 
@@ -29,4 +29,3 @@ def test_player_str():
     player = Player("Cleo")
     player.accept_cards(['r1', 'g2', 'b3', 'y4', 'w', 's', 'w+4'])
     assert str(player) == "Cleo: ('r1', 'g2', 'b3', 'y4', 'w', 's', 'w+4')"
-

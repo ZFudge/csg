@@ -1,4 +1,5 @@
-import hashlib, base64
+import hashlib
+import base64
 from time import time
 from random import random, choice
 
