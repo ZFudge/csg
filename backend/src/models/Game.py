@@ -33,7 +33,7 @@ class Game:
 			raise ValueError('Too many players to start the game')
 		self.players.init_hashes()
 		self.deck.deal_cards(self.players.players)
-		self.current_card = Card(self.deck.draw_cards(1)[0])
+		self.current_card = self.deck.draw_cards(1)[0]
 		self.started = True
 
 	def play_card(self, *, player: str, player_hash: str, card: str, index: int):
@@ -47,14 +47,14 @@ class Game:
 			self._validate_move(player, card)
 		except ValueError as e:
 			logger.error(e)
-			return
+			raise ValueError(e)
 
 		try:
 			played_card = player.play_card(value=card.value, index=index)
 			self.current_card = played_card
 		except ValueError as e:
 			logger.error(e)
-			return
+			raise ValueError(e)
 
 		self.current_card = played_card
 
@@ -84,20 +84,19 @@ class Game:
 		if player != self.current_player:
 			raise ValueError('Not your turn')
 
-		last_card = Card(self.current_card)
+		last_card = Card(self.current_card.value)
 
-		self.current_card = Card(color[0])
+		self.current_card = color[0]
 
 		self.players.next_player()
-
+		# If the last card was a draw card, draw cards against the current player
 		if last_card.draw_count:
-			# draw cards against the current player
 			new_cards = self.deck.draw_cards(last_card.draw_count)
 			self.players.current_player.accept_cards(new_cards)
 
 		return self.current_card
 
-	def _validate_move(self, player: Player, card: Card):
+	def _validate_move(self, player: Player, card: Card) -> bool:
 		if not player:
 			raise ValueError('Player not found')
 
@@ -107,12 +106,16 @@ class Game:
 		if not card.is_playable(self.current_card):
 			raise ValueError('Invalid card')
 
+		return True
+
 	@property
 	def current_card(self):
 		return self._current_card
 
 	@current_card.setter
-	def current_card(self, value: str):
+	def current_card(self, value: str | Card):
+		if isinstance(value, str):
+			value = Card(value)
 		self._current_card = value
 
 	@property

@@ -7,10 +7,10 @@ class Card:
         self.wild = False
         self.color = None
         self.number = None
-        self.draw_count = None
+        self.draw_count = 0
         self.reverse = False
         self.skip = False
-
+        self.action = None
         if value.endswith('+4'):
             self.draw_count = 4
         elif value.endswith('+2'):
@@ -22,12 +22,12 @@ class Card:
         # Wild cards and draw four wild cards
         if value.startswith('w'):
             self.wild = True
-            return
 
-        color = value[0]
-        if color not in DeckAttrs.COLORS:
-            raise ValueError(f'Invalid color: {color}')
-        self.color = color
+        if not self.wild:
+            color = value[0]
+            if color not in DeckAttrs.COLORS:
+                raise ValueError(f'Invalid color: {color}')
+            self.color = color
 
         remainder = value[1:]
         if not remainder:
@@ -36,7 +36,9 @@ class Card:
 
         if remainder.isdigit():
             self.number = int(remainder)
-        elif remainder in DeckAttrs.ACTIONS:
+            if self.number < 0 or self.number > 9:
+                raise ValueError(f'Invalid card value: {value}')
+        elif remainder in DeckAttrs.ACTIONS + ('+4',):
             self.action = remainder
         else:
             raise ValueError(f'Invalid card value: {value}')

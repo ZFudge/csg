@@ -1,4 +1,6 @@
-from models.Card import Card
+import pytest
+
+from src.models.Card import Card
 from src.models.Game import Game
 from src.models.Player import Player
 
@@ -12,11 +14,13 @@ def test_game_init():
     assert len(game.deck) == 112
     assert game.current_player == owner
 
+
 def test_game_add_player():
     game = Game("Cleo")
     game.add_new_player("Mathias")
     assert game.players.players == (game.players.owner, Player("Mathias"))
     assert game.current_player == game.players.owner
+
 
 def test_game_remove_player():
     game = Game("Cleo")
@@ -24,15 +28,18 @@ def test_game_remove_player():
     game.remove_player("Mathias")
     assert game.players.players == (game.players.owner,)
 
+
 def test_game_str():
     game = Game("Cleo")
     game.add_new_player("Mathias")
     assert str(game).startswith("Game(current_player=Cleo: (), owner=Cleo: (), players=(Player(name=Cleo, hand=()), Player(name=Mathias, hand=())), deck=Deck(cards=(")
 
+
 def test_game_repr():
     game = Game("Cleo")
     game.add_new_player("Mathias")
     assert str(game).startswith("Game(current_player=Cleo: (), owner=Cleo: (), players=(Player(name=Cleo, hand=()), Player(name=Mathias, hand=())), deck=Deck(cards=(")
+
 
 def test_game_start():
     game = Game("Cleo")
@@ -40,6 +47,7 @@ def test_game_start():
     assert game.started is False
     game.start()
     assert game.started is True
+
 
 def test_game_deal_cards():
     game = Game("Cleo")
@@ -49,6 +57,44 @@ def test_game_deal_cards():
     assert len(game.players.players[1].hand.cards) == 7
     assert len(game.deck.cards) == 97
 
+
+def test_game_choose_color():
+    game = Game("Cleo")
+    game.add_new_player("Mathias")
+    game.start()
+
+    game.choose_color(
+        player="Cleo",
+        player_hash=game.players.players[0].hash,
+        color="r"
+    )
+    assert game.current_card == Card("r")
+
+    game.players.next_player()
+    game.choose_color(
+        player="Cleo",
+        player_hash=game.players.players[0].hash,
+        color="g"
+    )
+    assert game.current_card == Card("g")
+
+    game.players.next_player()
+    game.choose_color(
+        player="Cleo",
+        player_hash=game.players.players[0].hash,
+        color="b"
+    )
+    assert game.current_card == Card("b")
+
+    game.players.next_player()
+    game.choose_color(
+        player="Cleo",
+        player_hash=game.players.players[0].hash,
+        color="y"
+    )
+    assert game.current_card == Card("y")
+
+
 def test_game_play_wild_card():
     """Test that the card is played and the current player is updated."""
     # Don't shuffle the deck to make the test deterministic.
@@ -57,9 +103,9 @@ def test_game_play_wild_card():
     game.start()
 
     current_player = game.current_player
-    card = Card(current_player.hand.cards[0])
+    card = Card("w")
     assert card.wild is True
-    assert card.draw_count is None
+    assert card.draw_count == 0
     assert card.color is None
     assert card.number is None
     remaining_expected = current_player.hand.cards[1:]
@@ -82,6 +128,7 @@ def test_game_play_wild_card():
     )
     assert game.current_card == Card("r")
     assert game.current_player == game.players.players[1]
+
 
 def test_game_play_draw_four_wild_card():
     game = Game("Cleo", shuffle=False)
@@ -117,6 +164,7 @@ def test_game_play_draw_four_wild_card():
 
     assert len(game.players.players[1].hand.cards) == 11
     assert game.current_player == game.players.players[1]
+
 
 def test_game_play_draw_two_card():
     game = Game("Cleo", shuffle=False)
@@ -165,6 +213,29 @@ def test_game_play_reverse_card_two_players():
     assert game.current_player == game.players.players[0]
 
 
+def test_game_play_reverse_card_three_players():
+    game = Game("Cleo", shuffle=False)
+    game.add_new_player("Mathias")
+    aloysius = game.add_new_player("Aloysius")
+    game.start()
+
+    current_player = game.current_player
+    # Green reverse card
+    card = Card("gr")
+    current_player.accept_cards(card.value)
+
+    # Manually set the current card to green to allow the green reverse card to be played
+    game.current_card = Card("g")
+    played_card = Card(game.play_card( 
+        player="Cleo",
+        player_hash=current_player.hash,
+        card=card.value,
+        index=7
+    ))
+    assert played_card == card
+    assert game.current_player == aloysius
+
+
 def test_game_play_skip_card_two_players():
     game = Game("Cleo", shuffle=False)
     game.add_new_player("Mathias")
@@ -208,6 +279,7 @@ def test_game_play_skip_card_three_players():
     ))
     assert played_card == card
     assert game.current_player == aloysius
+
 
 def test_game_dict():
     game = Game("Cleo", shuffle=False)
@@ -343,3 +415,83 @@ def test_game_dict():
            'y+2',
         )
     }
+
+
+def test_game_validate_move_wild_card():
+    game = Game("Cleo", shuffle=False)
+    game.add_new_player("Mathias")
+    game.start()
+
+    current_player = game.current_player
+    card = Card("w")
+    assert card.wild is True
+    assert game._validate_move(current_player, card) is True
+
+
+def test_game_validate_move_draw_four_wild_card():
+    game = Game("Cleo", shuffle=False)
+    game.add_new_player("Mathias")
+    game.start()
+
+    current_player = game.current_player
+    card = Card("w+4")
+    assert card.wild is True
+    assert card.draw_count == 4
+    assert game._validate_move(current_player, card) is True
+
+
+def test_game_validate_move_draw_two_card():
+    game = Game("Cleo", shuffle=False)
+    game.add_new_player("Mathias")
+    game.start()
+    game.current_card = Card("b")
+
+    current_player = game.current_player
+    card = Card("b+2")
+    assert card.wild is False
+    assert card.draw_count == 2
+    assert game._validate_move(current_player, card) is True
+
+
+def test_game_validate_move_reverse_card():
+    game = Game("Cleo", shuffle=False)
+    game.add_new_player("Mathias")
+    game.start()
+
+    game.current_card = Card("g")
+    current_player = game.current_player
+    card = Card("gr")
+    assert card.wild is False
+    assert card.reverse is True
+    assert game._validate_move(current_player, card) is True
+
+
+def test_game_player_turn_play_card():
+    game = Game("Cleo", shuffle=False)
+    game.add_new_player("Mathias")
+    game.start()
+
+    assert game.current_player == game.players.players[0]
+
+    with pytest.raises(ValueError):
+        game.play_card(
+            player="Mathias",
+            player_hash=game.players.players[1].hash,
+            card=Card("w+4").value,
+            index=0
+        )
+
+
+def test_game_player_turn_choose_color():
+    game = Game("Cleo", shuffle=False)
+    game.add_new_player("Mathias")
+    game.start()
+
+    assert game.current_player == game.players.players[0]
+
+    with pytest.raises(ValueError):
+        game.choose_color(
+            player="Mathias",
+            player_hash=game.players.players[1].hash,
+            color="r"
+        )
