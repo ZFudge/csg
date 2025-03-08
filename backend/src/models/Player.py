@@ -24,6 +24,12 @@ class Player:
     def play_card(self, *, value: str, index: int):
         return self._hand.play_card(value, index)
 
+    def as_dict(self):
+        return {
+            'name': self.name,
+            'hand': self.hand.cards
+        }
+
     @property
     def hash(self):
         return self._hash

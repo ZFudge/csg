@@ -154,3 +154,11 @@ class Game:
 			f"players={self.players.players}, "
 			f"deck={self.deck})"
 		)
+
+	def as_dict(self):
+		return {
+			'current_player': self.current_player.name,
+			'owner': self.owner.name,
+			'players': tuple([p.as_dict() for p in self.players.players]),
+			'deck': self.deck.cards
+		}
