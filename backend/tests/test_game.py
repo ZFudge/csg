@@ -124,6 +124,7 @@ def test_game_play_draw_two_card():
     game.start()
 
     current_player = game.current_player
+    # Blue draw two card
     card = Card("b+2")
     current_player.accept_cards(card.value)
 
@@ -140,3 +141,25 @@ def test_game_play_draw_two_card():
 
     assert game.current_player == game.players.players[1]
     assert len(game.players.players[1].hand.cards) == 9
+
+
+def test_game_play_reverse_card_two_players():
+    game = Game("Cleo", shuffle=False)
+    game.add_new_player("Mathias")
+    game.start()
+
+    current_player = game.current_player
+    # Green reverse card
+    card = Card("gr")
+    current_player.accept_cards(card.value)
+
+    # Manually set the current card to green to allow the green reverse card to be played
+    game.current_card = Card("g")
+    played_card = Card(game.play_card( 
+        player="Cleo",
+        player_hash=current_player.hash,
+        card=card.value,
+        index=7
+    ))
+    assert played_card == card
+    assert game.current_player == game.players.players[0]

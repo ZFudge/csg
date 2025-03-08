@@ -8,12 +8,18 @@ class Card:
         self.color = None
         self.number = None
         self.draw_count = None
+        self.reverse = False
+        self.skip = False
 
         if value.endswith('+4'):
             self.draw_count = 4
         elif value.endswith('+2'):
             self.draw_count = 2
-
+        elif value.endswith('r'):
+            self.reverse = True
+        elif value.endswith('s'):
+            self.skip = True
+        # Wild cards and draw four wild cards
         if value.startswith('w'):
             self.wild = True
             return

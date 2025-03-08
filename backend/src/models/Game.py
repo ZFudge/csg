@@ -17,7 +17,7 @@ class Game:
 	def add_new_player(self, new_player_name: str):
 		if self.started:
 			raise ValueError('Game already started')
-		self.players.add_player(new_player_name)
+		return self.players.add_player(new_player_name)
 
 	def remove_player(self, player_name: str):
 		if self.started:
@@ -58,11 +58,18 @@ class Game:
 
 		self.current_card = played_card
 
+		# Set current player, if needed
 		if card.wild:
-			return played_card
-
-		self.players.next_player()
-		if card.draw_count:
+			# Next player will be set when the current player chooses a color
+			pass
+		elif card.reverse:
+			# Reverse cards work as skip cards in 2-player games.
+			if 2 < len(self.players.players):
+				# Reverse the player direction
+				self.players.reverse_player_direction()
+				self.players.next_player()
+		elif card.draw_count:
+			self.players.next_player()
 			# draw cards against the current player
 			new_cards = self.deck.draw_cards(card.draw_count)
 			self.players.current_player.accept_cards(new_cards)

@@ -17,6 +17,7 @@ class PlayerManager:
         player = Player(player_name)
         self.players = self.players + (player,)
         self._indexer.add_player()
+        return player
 
     def remove_player(self, player_name: str):
         """Remove a player from the game."""
