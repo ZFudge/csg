@@ -17,39 +17,39 @@ help:
 
 .PHONY: build
 build:
-	@docker-compose build
+	@docker compose build
 
 .PHONY: run
 run: clean
-	@docker-compose up -d
+	@docker compose up -d
 
 .PHONY: clean
 clean:
-	@docker-compose down --remove-orphans
+	@docker compose down --remove-orphans
 	@docker rm -f $(FE_CONTAINER) $(BE_CONTAINER) || true
 
 .PHONY: logs
 logs:
-	@docker-compose logs --follow
+	@docker compose logs --follow
 
 shell-fe:
-	@docker-compose exec -it $(FE_CONTAINER) bash
+	@docker compose exec -it $(FE_CONTAINER) bash
 
 .PHONY: install
 install:
-	@docker-compose exec -it $(FE_CONTAINER) sh -c 'pnpm install'
+	@docker compose exec -it $(FE_CONTAINER) sh -c 'pnpm install'
 
 .PHONY: static
 static:
-	@docker-compose exec -it $(FE_CONTAINER) sh -c 'pnpm build'
+	@docker compose exec -it $(FE_CONTAINER) sh -c 'pnpm build'
 
 .PHONY: storybook
 storybook:
-	@docker-compose exec -it $(FE_CONTAINER) sh -c 'pnpm storybook'
+	@docker compose exec -it $(FE_CONTAINER) sh -c 'pnpm storybook'
 
 .PHONY: storybook-build
 storybook-build:
-	@docker-compose exec -it $(FE_CONTAINER) sh -c 'pnpm build-storybook'
+	@docker compose exec -it $(FE_CONTAINER) sh -c 'pnpm build-storybook'
 
 shell-be:
-	@docker-compose exec -it $(BE_CONTAINER) sh
+	@docker compose exec -it $(BE_CONTAINER) sh
