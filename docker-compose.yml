@@ -10,8 +10,6 @@ x-common-attrs: &common-attrs
   env_file: .env
   networks:
     - csg-network
-  volumes:
-    - static-vol:/csg/build
 
 services:
   csg-be:
@@ -22,7 +20,9 @@ services:
     ports:
       - 5075:5075
     volumes:
-      - ./backend:/csg
+      - ./backend:/backend
+      - ./wsgi.py:/wsgi.py
+      - static-vol:/backend/build
   csg-fe-dev:
     << : *common-attrs
     build: frontend
@@ -34,3 +34,16 @@ services:
     command: ["pnpm", "start"]
     volumes:
       - ./frontend:/csg
+      - static-vol:/csg/build
+  csg-nginx:
+    << : *common-attrs
+    image: nginx:latest
+    container_name: csg-nginx
+    ports:
+      - 8080:80
+    volumes:
+      - static-vol:/usr/share/nginx/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - csg-be
+      - csg-fe-dev

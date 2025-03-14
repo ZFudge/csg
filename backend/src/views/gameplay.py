@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 
-from csg import cache, socket, utils
+from app import cache, socket
+import utils
 
 
 gameplay = Blueprint('gameplay', __name__)

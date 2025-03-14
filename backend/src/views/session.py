@@ -4,8 +4,8 @@ from dotenv import load_dotenv
 
 from flask import Blueprint, jsonify, request
 
-from csg import utils
-from csg import cache, socket
+from app import cache, socket
+import utils
 
 load_dotenv()
 MAX_PLAYERS = int(getenv('REACT_APP_MAX_PLAYERS') or 6)
