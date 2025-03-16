@@ -59,7 +59,6 @@ def set_color():
 			'players': game_data['players'],
 			'playerName': player_name,
 		},
-		broadcast=True
 	)
 	return jsonify({'success': f'Set color to {color}.'})
 
@@ -135,7 +134,6 @@ def draw_cards():
 			'currentPlayer': game_data['current_player'],
 			'drawCount': 1,
 		},
-		broadcast=True
 	)
 	return jsonify({
 		'myCards': player_cards,
