@@ -1,5 +1,6 @@
 FE_CONTAINER := csg-fe-dev
 BE_CONTAINER := csg-be
+STATIC_VOLUME := static-vol
 
 .PHONY: help
 help:
@@ -39,11 +40,11 @@ shell-fe:
 
 .PHONY: install
 install:
-	@docker compose run $(FE_CONTAINER) pnpm install
+	@docker run --rm -v $(shell pwd)/frontend/node_modules:/frontend/node_modules csg-fe:latest pnpm install
 
 .PHONY: static
 static:
-	@docker compose exec -it $(FE_CONTAINER) sh -c 'pnpm build'
+	@docker run --rm -v $(shell pwd)/frontend/node_modules:/frontend/node_modules -v static-vol:/frontend/build csg-fe:latest pnpm build
 
 .PHONY: storybook
 storybook:
@@ -55,3 +56,13 @@ storybook-build:
 
 shell-be:
 	@docker compose exec -it $(BE_CONTAINER) sh
+
+shell-nginx:
+	@docker compose exec -it csg-nginx sh
+
+all: build install static run
+
+nuke:
+	@docker compose down --remove-orphans
+	@docker rm -f $(FE_CONTAINER) $(BE_CONTAINER) $(NGINX_CONTAINER) || true
+	@docker rmi csg-fe:latest csg-be:latest || true
