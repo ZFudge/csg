@@ -1,11 +1,13 @@
+import logging
 from os import getenv
 
 from dotenv import load_dotenv
-
 from flask import Blueprint, jsonify, request
 
 from app import cache, socket
 import utils
+
+logger = logging.getLogger(__name__)
 
 load_dotenv()
 MAX_PLAYERS = int(getenv('REACT_APP_MAX_PLAYERS') or 6)
@@ -19,7 +21,7 @@ session = Blueprint('session', __name__)
 def create_new_game():
 	"""Create an inactive game that players can join."""
 	request_data = request.get_json()
-	print(f"/create_new_game request_data: {request_data}")
+	logger.info("Creating new game with request data: %s", request_data)
 	player_name = request_data.get('player_name')
 
 	# Only used when starting a new game after a game has ended
@@ -53,14 +55,20 @@ def create_new_game():
 	cache.set(game_hash, game_data)
 
 	if recycled_game:
-		socket.emit(
-			f'{game_hash}_recycled_game',
-			{
-				'playerNames': player_names,
-				'activatedPlayer': player_name,
-				'setGameCreator': player_name,
-			},
-		)
+		data = {
+			'playerNames': player_names,
+			'activatedPlayer': player_name,
+			'setGameCreator': player_name,
+		}
+		logger.info("Emitting recycled game for game hash: %s %s", game_hash, data)
+		try:
+			socket.emit(
+				f'{game_hash}_recycled_game',
+				data,
+			)
+		except Exception as e:
+			logger.error("Error emitting recycled game for game hash: %s %s", game_hash, e)
+			return jsonify({'error': str(e)})
 
 	return jsonify({
 		'gameHash': game_hash,
@@ -73,8 +81,8 @@ def create_new_game():
 @session.route('/add_player', methods=['POST'])
 def add_player():
 	"""Add a player to a pending game."""
-	print('/add_player')
 	request_data = request.get_json(force=True)
+	logger.info("Adding player to game with request data: %s", request_data)
 
 	# Only used when starting a new game after a game has ended
 	recycled_game = request_data.get('recycled_game')
@@ -84,11 +92,13 @@ def add_player():
 	game_data = cache.get(game_hash)
 
 	if not game_data or game_data['active']:
+		logger.error("Could not join game using code: %s", game_hash)
 		return jsonify({
 			'error': f'Could not join game using code "{game_hash}". ' +
 					  'Either the game code is invalid or the game is already in progress.'
 		})
 	elif not player_name:
+		logger.error("Missing player name for game hash: %s", game_hash)
 		return jsonify({'error': utils.errors['no_player_name']})
 	elif not recycled_game and player_name in game_data['players']:
 		if game_data['active']:
@@ -96,6 +106,7 @@ def add_player():
 			return jsonify({'redirect': '/game'})
 		return jsonify({'error': utils.errors['invalid_value']('name', player_name)})
 	elif game_data['num_players'] > MAX_PLAYERS:
+		logger.error("Can't exceed %s players for game hash: %s", MAX_PLAYERS, game_hash)
 		return jsonify({'error': f'Can\'t exceed {MAX_PLAYERS} players.'})
 
 	if len(player_name) > MAX_NAME_LENGTH:
@@ -114,22 +125,34 @@ def add_player():
 	cache.set(game_hash, game_data)
 
 	if recycled_game:
-		socket.emit(
-			f'{game_hash}_recycled_game',
-			{
-				'playerNames': list(game_data['players'].keys()),
-				'activatedPlayer': player_name,
-				'playerColors': game_data['player_colors'],
-			},
-		)
+		data = {
+			'playerNames': list(game_data['players'].keys()),
+			'activatedPlayer': player_name,
+			'playerColors': game_data['player_colors'],
+		}
+		logger.info("Emitting recycled game for game hash: %s %s", game_hash, data)
+		try:
+			socket.emit(
+				f'{game_hash}_recycled_game',
+				data,
+			)
+		except Exception as e:
+			logger.error("Error emitting recycled game for game hash: %s %s", game_hash, e)
+			return jsonify({'error': str(e)})
 	else:
-		socket.emit(
-			game_hash,
-			{
-				'playerNames': list(game_data['players'].keys()),
-				'playerColors': game_data['player_colors'],
-			},
-		)
+		data = {
+			'playerNames': list(game_data['players'].keys()),
+			'playerColors': game_data['player_colors'],
+		}
+		logger.info("Emitting game for game hash: %s %s", game_hash, data)
+		try:
+			socket.emit(
+				game_hash,
+				data,
+			)
+		except Exception as e:
+			logger.error("Error emitting game for game hash: %s %s", game_hash, e)
+			return jsonify({'error': str(e)})
 
 	return jsonify({
 		'playerNames': list(game_data['players'].keys()),
@@ -141,8 +164,8 @@ def add_player():
 @session.route('/start_game', methods=['POST'])
 def start_game():
 	"""Set game object's active property to true, create card_deck, and deal player cards."""
-	print('/start_game')
 	request_data = request.get_json()
+	logger.info("Starting game with request data: %s", request_data)
 
 	game_hash = request_data.get('game_hash')
 	# Only used when starting a new game after a game has ended
@@ -150,23 +173,29 @@ def start_game():
 
 	game_data = cache.get(game_hash)
 	if not game_data:
+		logger.error("No game data found for game hash: %s", game_hash)
 		return jsonify({'error': utils.errors['no_game_data'](game_hash)})
 
 	player_name = request_data.get('player_name')
 	if not player_name:
+		logger.error("Missing player name for game hash: %s", game_hash)
 		return jsonify({'error': utils.errors['missing_request_data']('player name')})
 
 	player_hash = request_data.get('player_hash')
 	if not player_hash:
+		logger.error("Missing player hash for game hash: %s", game_hash)
 		return jsonify({'error': utils.errors['missing_request_data']('player hash')})
 	elif player_hash != game_data['player_hashes'][player_name]:
+		logger.error("Incorrect player hash for game hash: %s", game_hash)
 		return jsonify({'error': utils.errors['incorrect_player_hash'](player_hash)})
 
 	if game_data['active']:
+		logger.error("Game has already started for game hash: %s", game_hash)
 		return jsonify({'error': 'Game has already started.'})
 
 	num_players = game_data['num_players']
 	if num_players < 2:
+		logger.error("Not enough players to start game for game hash: %s", game_hash)
 		return jsonify({
 			'error': 'At least two players must join before game can start.',
 			'gameData': game_data,

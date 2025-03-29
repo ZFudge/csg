@@ -37,6 +37,4 @@ class PlayerNameInput extends Component {
   }
 }
 
-
 export default PlayerNameInput;
-

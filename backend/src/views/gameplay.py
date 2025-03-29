@@ -1,8 +1,12 @@
+import logging
+
 from flask import Blueprint, jsonify, request
 
 from app import cache, socket
 import utils
 
+
+logger = logging.getLogger(__name__)
 
 gameplay = Blueprint('gameplay', __name__)
 
@@ -12,17 +16,21 @@ def get_game_data():
 	game_hash = request.args.get('game_hash')
 	game_data = cache.get(game_hash)
 	if not game_data:
+		logger.error("No game data found for game hash: %s", game_hash)
 		return jsonify({'error': utils.errors['no_game_data'](game_hash)})
 
 	player_name = request.args.get('player_name')
 	players_cards = game_data['players']
 	if player_name not in players_cards:
-		return jsonify({'error': f'Couldn\'t find data for in player {player}'})
+		logger.error("Couldn't find data for player %s in game hash: %s", player_name, game_hash)
+		return jsonify({'error': f'Couldn\'t find data for player {player_name} in game hash: {game_hash}'})
 
 	player_hash = request.args.get('player_hash')
 	if not player_hash:
+		logger.error("Missing player hash for player %s in game hash: %s", player_name, game_hash)
 		return jsonify({'error': utils.errors['missing_request_data']('player hash')})
 	elif player_hash != game_data['player_hashes'][player_name]:
+		logger.error("Incorrect player hash for player %s in game hash: %s", player_name, game_hash)
 		return jsonify({'error': utils.errors['incorrect_player_hash'](player_hash)})
 
 	for player in players_cards:
@@ -47,29 +55,37 @@ def play_card():
 	card = card_color + card_type
 
 	if not card:
+		logger.error("Missing card data for player %s in game hash: %s", player_name, game_hash)
 		return jsonify({'error': utils.errors['missing_request_data']('card data')})
 	if not utils.validate_card(card):
+		logger.error("Invalid card data for player %s in game hash: %s", player_name, game_hash)
 		return jsonify({'error': utils.errors['invalid_value']('card', card)})
 
 	game_data = cache.get(game_hash)
 	if not game_data:
+		logger.error("No game data found for game hash: %s", game_hash)
 		return jsonify({'error': utils.errors['no_game_data'](game_hash)})
 
 	player_hash = request_data.get('player_hash')
 	if not player_hash:
+		logger.error("Missing player hash for player %s in game hash: %s", player_name, game_hash)
 		return jsonify({'error': utils.errors['missing_request_data']('player hash')})
 	elif player_hash != game_data['player_hashes'][player_name]:
+		logger.error("Incorrect player hash for player %s in game hash: %s", player_name, game_hash)
 		return jsonify({'error': utils.errors['incorrect_player_hash'](player_hash)})
 
 	current_player = game_data['current_player']
 	if player_name != current_player:
+		logger.error("Player %s can't play, current player is %s", player_name, current_player)
 		return jsonify({'error': f'{player_name} can\'t play, current player is {current_player}'})
 
 	player_cards = game_data['players'][player_name]
 	if card not in player_cards:
-		return jsonify({'error': f'{player_name} doesn\'t have {card} in {player_cards}"'})
+		logger.error("Player %s doesn't have %s in %s", player_name, card, player_cards)
+		return jsonify({'error': f'{player_name} doesn\'t have {card} in {player_cards}'})
 
 	if player_cards[card_index] != card:
+		logger.error("Unable to find %s at index %s. Found %s instead.", card, card_index, player_cards[card_index])
 		return jsonify({
 			'error': f"Unable to find {card} at index {card_index}. Found {player_cards[card_index]} instead."
 		})
@@ -80,6 +96,7 @@ def play_card():
 		card_color == game_data['card_color'] or
 		card_type == game_data['card_type']
 	):
+		logger.error("Unable to play %s following %s%s", card, game_data['card_color'], game_data['card_type'])
 		return jsonify({
 			'error': f"Unable to play {card} following {game_data['card_color']}{game_data['card_type']}"
 		})
@@ -131,20 +148,26 @@ def play_card():
 
 	cache.set(game_hash, game_data)
 
-	socket.emit(
-		game_hash,
-		{
-			'cardType': game_data['card_type'],
-			'cardColor': game_data['card_color'],
-			'currentPlayer': game_data['current_player'],
-			'players': game_data['players'],
-			'active': game_data['active'],
-			'winner': game_data['winner'],
-			'increment': game_data['player_increment'],
-			'drawCount': draw_count,
-			'playerHasOneCardRemaining': player_has_one_card_remaining,
-		},
-	)
+	socket_data = {
+		'cardType': game_data['card_type'],
+		'cardColor': game_data['card_color'],
+		'currentPlayer': game_data['current_player'],
+		'players': game_data['players'],
+		'active': game_data['active'],
+		'winner': game_data['winner'],
+		'increment': game_data['player_increment'],
+		'drawCount': draw_count,
+		'playerHasOneCardRemaining': player_has_one_card_remaining,
+	}
+	logger.info("Emitting game data for game hash: %s %s", game_hash, socket_data)
+	try:
+		socket.emit(
+			game_hash,
+			socket_data,
+		)
+	except Exception as e:
+		logger.error("Error emitting game data for game hash: %s %s", game_hash, e)
+		return jsonify({'error': str(e)})
 
 	return jsonify({
 		'success': f"{game_data['card_type']} {game_data['card_color']}",

@@ -60,4 +60,3 @@ class WildCardColorChoice extends Component {
 }
 
 export default WildCardColorChoice;
-

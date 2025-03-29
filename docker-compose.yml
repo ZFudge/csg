@@ -1,10 +1,13 @@
 networks:
   csg-network:
     name: csg-network
+    external: true
+    driver: bridge
 
 volumes:
   static-vol:
     name: static-vol
+    external: true
 
 x-common-attrs: &common-attrs
   env_file: .env

@@ -176,6 +176,4 @@ class JoinGame extends Component {
   }
 }
 
-
 export default withRouter(JoinGame);
-

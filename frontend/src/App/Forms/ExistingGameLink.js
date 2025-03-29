@@ -52,6 +52,4 @@ class ExistingGameLink extends Component {
   }
 }
 
-
 export default ExistingGameLink;
-

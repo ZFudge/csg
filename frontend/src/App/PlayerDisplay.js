@@ -47,6 +47,4 @@ class PlayerDisplay extends Component {
   }
 }
 
-
 export default PlayerDisplay;
-

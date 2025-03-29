@@ -240,6 +240,4 @@ class RecycleGame extends Component {
   }
 }
 
-
 export default RecycleGame;
-
