@@ -6,7 +6,7 @@ from flask import Blueprint
 from flask.helpers import send_from_directory
 from werkzeug.routing import BaseConverter
 
-from csg import app
+from app import app
 
 load_dotenv()
 MAX_NAME_LENGTH = int(getenv('REACT_APP_MAX_NAME_LENGTH') or 10)

@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 
-from csg import cache, socket, utils
+from app import cache, socket
+import utils
 
 
 gameplay = Blueprint('gameplay', __name__)
@@ -143,7 +144,6 @@ def play_card():
 			'drawCount': draw_count,
 			'playerHasOneCardRemaining': player_has_one_card_remaining,
 		},
-		broadcast=True
 	)
 
 	return jsonify({

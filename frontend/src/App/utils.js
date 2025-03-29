@@ -1,7 +1,6 @@
 import React from 'react';
 
 
-// const zfudgeIconPath = (process.env.PUBLIC_URL + 'images/android-chrome-512x512.png');
 const zfudgeIconPath = '/images/android-chrome-512x512.png';
 
 
@@ -60,7 +59,7 @@ function rejoinedPlayersList(oldGamePlayers, newGamePlayers, activePlayers, game
 
 
 function fetchHandler(endpoint, postData, callback) {
-  fetch(`/${endpoint}`, {
+  fetch(`/api/${endpoint}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -74,7 +73,7 @@ function fetchHandler(endpoint, postData, callback) {
 
 
 function getGameData({gameHash, playerName, playerHash}, callback) {
-  fetch(`/get_game_data?game_hash=${gameHash}&player_name=${playerName}&player_hash=${playerHash}`)
+  fetch(`/api/get_game_data?game_hash=${gameHash}&player_name=${playerName}&player_hash=${playerHash}`)
   .then(res => res.json())
   .then(data => callback(data))
   .catch(console.log);
@@ -96,4 +95,3 @@ export {
   getGameData,
   getRandomRotationDegrees,
 };
-

@@ -1,6 +1,7 @@
-import hashlib, base64
-from time import time
-from random import random, choice
+import base64
+import hashlib
+import random
+import time
 
 import deck
 
@@ -15,25 +16,25 @@ player_colors = [
 ]
 
 def get_random_color(player_name, color_dict):
-	random_color = choice([c for c in player_colors if c not in [v for k,v in color_dict.items()]])
+	random_color = random.choice([c for c in player_colors if c not in [v for k,v in color_dict.items()]])
 	color_dict[player_name] = random_color
 	return color_dict
 
 
 def get_new_hash(input_value: int) -> str:
-	input_value_bytes = str(time()).encode()
+	input_value_bytes = str(time.time()).encode()
 	hashed_input_value = hashlib.sha224(input_value_bytes).hexdigest().encode("ascii")
 	encoded_hashed_input_value = base64.b64encode(hashed_input_value).decode()
 	return encoded_hashed_input_value
 
 
 def get_new_game_hash(game_hash_length):
-	encoded_hashed_ts = get_new_hash(time())
+	encoded_hashed_ts = get_new_hash(time.time())
 	return encoded_hashed_ts[:game_hash_length]
 
 
 def get_new_player_hash():
-	encoded_hashed_ts = get_new_hash(time() / random())
+	encoded_hashed_ts = get_new_hash(time.time() / random.random())
 	return encoded_hashed_ts[:5]
 
 

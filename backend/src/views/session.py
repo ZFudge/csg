@@ -4,8 +4,8 @@ from dotenv import load_dotenv
 
 from flask import Blueprint, jsonify, request
 
-from csg import utils
-from csg import cache, socket
+from app import cache, socket
+import utils
 
 load_dotenv()
 MAX_PLAYERS = int(getenv('REACT_APP_MAX_PLAYERS') or 6)
@@ -60,7 +60,6 @@ def create_new_game():
 				'activatedPlayer': player_name,
 				'setGameCreator': player_name,
 			},
-			broadcast=True
 		)
 
 	return jsonify({
@@ -122,7 +121,6 @@ def add_player():
 				'activatedPlayer': player_name,
 				'playerColors': game_data['player_colors'],
 			},
-			broadcast=True
 		)
 	else:
 		socket.emit(
@@ -131,7 +129,6 @@ def add_player():
 				'playerNames': list(game_data['players'].keys()),
 				'playerColors': game_data['player_colors'],
 			},
-			broadcast=True
 		)
 
 	return jsonify({
@@ -190,9 +187,9 @@ def start_game():
 
 	cache.set(game_hash, game_data)
 	if recycled_game:
-		socket.emit(f'{game_hash}_recycled_game', {'active': True}, broadcast=True)
+		socket.emit(f'{game_hash}_recycled_game', {'active': True})
 	else:
-		socket.emit(game_hash, {'active': True}, broadcast=True)
+		socket.emit(game_hash, {'active': True})
 
 	return jsonify({
 		'playersData': list(players_data.keys()),
@@ -216,8 +213,6 @@ def exit():
 	player_hash = request_data.get('player_hash')
 	if not player_hash:
 		return jsonify({'error': utils.errors['missing_request_data']('player hash')})
-	elif player_hash != game_data['player_hashes'][player_name]:
-		return jsonify({'error': utils.errors['incorrect_player_hash'](player_hash)})
 
 	players_data = game_data['players']
 	if player_name in players_data:
@@ -241,7 +236,6 @@ def exit():
 			'abort': abort,
 			'playerNames': player_names,
 		},
-		broadcast=True
 	)
 
 	return jsonify({'message': 'success'})
