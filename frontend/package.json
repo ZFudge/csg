@@ -22,7 +22,7 @@
     "react-scripts": "^5.0.1",
     "socket.io-client": "^4.8.1"
   },
-  "proxy": "http://csg-be:5075",
+  "proxy": "http://csg-nginx:80",
   "browserslist": {
     "production": [
       ">0.2%",

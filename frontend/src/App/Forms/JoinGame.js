@@ -122,7 +122,7 @@ class JoinGame extends Component {
     return (
       <>
         <nav>
-          <Link to='/' className='link'>Back</Link>
+          <Link to='/' className='home link'>🏠</Link>
         </nav>
         <img id='zfudge-icon' src={utils.zfudgeIconPath} />
         <div className='align-center'>
