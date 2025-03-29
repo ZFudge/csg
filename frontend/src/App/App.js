@@ -3,9 +3,9 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import CreateNewGame from './Forms/CreateNewGame';
 import DefaultForm from './Forms/DefaultForm';
-import Game from './Game';
 import JoinGame from './Forms/JoinGame';
-
+import Game from './Game';
+import NotFound from './NotFound';
 
 class App extends Component {
   render() {
@@ -18,6 +18,7 @@ class App extends Component {
             <Route path="/join" element={<JoinGame />} />
             <Route path="/game" element={<Game />} />
             <Route path="/" element={<DefaultForm />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
       </BrowserRouter>

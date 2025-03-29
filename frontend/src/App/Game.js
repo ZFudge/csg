@@ -415,4 +415,3 @@ class Game extends Component {
 }
 
 export default withRouter(Game);
-

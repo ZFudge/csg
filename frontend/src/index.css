@@ -251,3 +251,17 @@ button.enabled:hover {
   margin: auto;
   display: block;
 }
+
+.not-found-link {
+  top: 0;
+  left: 0;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.not-found-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
