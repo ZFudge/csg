@@ -21,7 +21,7 @@ button {
   border: none;
   font-size: 1rem;
   font-weight: 800;
-  transition-duration: 0.5s;
+  transition-duration: 500ms;
   color: black;
   background-color: #ddd;
 }
@@ -33,6 +33,7 @@ button {
 button.disabled {
   background-color: #999;
   color: black;
+  cursor: not-allowed;
 }
 
 button.enabled {
@@ -65,13 +66,21 @@ button.enabled:hover {
 .link {
   text-decoration: none;
   color: black;
-  transition-duration: 0.5s;
+  transition-duration: 667ms;
   padding: 0.5em 1em;
+  font-size: x-large;
+  font-weight: 800;
+  border-radius: 0.25em;
 }
 
 .link:hover, button:not(.disabled,.color-choice):hover {
   background-color: black;
   color: white;
+}
+
+.home {
+  padding: 0.125em;
+  font-size: x-large;
 }
 
 .align-text-center {
@@ -173,7 +182,7 @@ button.enabled:hover {
   border-radius: 50%;
   height: 0.5em;
   width: 0.5em;
-  transition-duration: 0.5s;
+  transition-duration: 500ms;
 }
 
 .dot.focus {
@@ -241,4 +250,18 @@ button.enabled:hover {
   height: 10em;
   margin: auto;
   display: block;
+}
+
+.not-found-link {
+  top: 0;
+  left: 0;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.not-found-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

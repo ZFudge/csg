@@ -2,14 +2,12 @@ import React, { Component } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { FaHandPointRight } from '@react-icons/all-files/fa/FaHandPointRight';
 
-import PlayerNameInput from './PlayerNameInput';
-import ExistingGameLink from './ExistingGameLink';
-import './Forms.css';
-import * as utils from '../utils';
-
-import webSocket from '../webSocket';
-
 import { withRouter } from '../../utils';
+import * as utils from '../utils';
+import webSocket from '../webSocket';
+import ExistingGameLink from './ExistingGameLink';
+import PlayerNameInput from './PlayerNameInput';
+import './Forms.css';
 
 class CreateNewGame extends Component {
   constructor(props) {
@@ -139,7 +137,7 @@ class CreateNewGame extends Component {
     return (
       <>
         <nav>
-          <Link to='/' className='link'>Back</Link>
+          <Link to='/' className='home link'>🏠</Link>
         </nav>
         <img id='zfudge-icon' src={utils.zfudgeIconPath} />
         <div className='align-center'>
