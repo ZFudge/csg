@@ -51,4 +51,3 @@ class PlayerContainer extends Component {
 }
 
 export default PlayerContainer;
-

@@ -28,6 +28,4 @@ class DefaultForm extends Component {
   }
 }
 
-
 export default DefaultForm;
-
